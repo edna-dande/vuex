@@ -42,14 +42,14 @@
                 products: state => state.products.items
             }),
              
-            ...mapGetters({
+            ...mapGetters('products', {
                 productIsInStock: 'productIsInStock'
             })
             
         },
 
         methods: {
-            ...mapActions({
+            ...mapActions( {
                 fetchProducts: 'fetchProducts',
                 addProductToCart: 'addProductsToCart'
             }),

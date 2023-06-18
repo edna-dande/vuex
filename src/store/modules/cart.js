@@ -1,4 +1,6 @@
 export default {
+    namespaced: true,
+
     state: {
 
         //{id, quantity}
@@ -6,7 +8,7 @@ export default {
         checkoutStatus: null
     },
     getters: {
-        cartProducts (state, getters, rootState) {
+        cartProducts (state, getters, rootState, rootGetters) {
             return state.items.map(cartItem => {
                 const product = rootState.products.items.find(product => product.id === cartItem.id)
                 return {
@@ -47,8 +49,8 @@ export default {
     },
 
     actions: {
-        addProductToCart ({state, getters, commit, rootState}, product) {
-            if (commit.getters.productIsInStock(product)) {
+        addProductToCart ({state, getters, commit, rootState, rootGetters}, product) {
+            if (rootGetters['products/productIsInStock'](product)) {
                 const cartItem = context.state.items.find(item => item.id === product.id)
                // find cartItem
                 if (!cartItem) {
@@ -58,7 +60,7 @@ export default {
                 commit('incrementItemQuantity', cartItem)
                 // incrementItemQuantity
                 } 
-                commit('decrementProductInventory', product)
+                commit('products/decrementProductInventory', product, {root: true})
                 // decrementProductInventory
                 }   
             },
@@ -76,5 +78,6 @@ export default {
                     }
                 )
             }
+        
     }
 }
