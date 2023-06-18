@@ -13,8 +13,26 @@ export default new Vuex.Store({
 
     getters: {  // = computed properties
         availableProducts (state, getters) {
-return state.products.filter(product => product.inventory > 0)
+        return state.products.filter(product => product.inventory > 0)
+        },
+
+        cartProducts (state) {
+            return state.cart.map(cartItem => {
+                const product = state.products.find(product => product.id === cartItem.id)
+                return {
+                    title: product.title,
+                    price: product.price,
+                    quantity: cartItem.quantity
+
+
+                }
+            }) 
+        },
+
+        cartTotal (state,getters) {
+            return getters.cartProducts.reduce((total, product) => total + product.price * product.quantity, 0)
         }
+
     },
 
     actions:{ // = methods
@@ -31,10 +49,10 @@ return state.products.filter(product => product.inventory > 0)
         },
 
         addProductToCart (context, product) {
-            if (product.inventory > 0){
+            if (product.inventory > 0) {
                 const cartItem = context.state.cart.find(item => item.id === product.id)
                // find cartItem
-                if(!cartItem) {
+                if (!cartItem) {
                 context.commit('pushProductToCart', product.id)
                 //pushProductToCart
                 } else {
@@ -45,11 +63,10 @@ return state.products.filter(product => product.inventory > 0)
                 // decrementProductInventory
                 }   
             }
+         },
             
-        }
-    },
-
-    mutations: {
+    
+        mutations: {
        setProducts (state, products) {
         // update products
 
@@ -63,11 +80,11 @@ return state.products.filter(product => product.inventory > 0)
             })
         },
 
-        incrementItemQuantity (state, cartItem){
+        incrementItemQuantity (state, cartItem) {
             cartItem.quantity++
         },
 
-        decrementProductInventory (state, product ){
+        decrementProductInventory (state, product ) {
             product.inventory--
         }
     }
