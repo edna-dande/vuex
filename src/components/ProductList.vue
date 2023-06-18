@@ -33,13 +33,13 @@
         },
 
         // computed: mapState({
-        //     products: state => state.products,
+        //     products: state => state.products
 
         // }),
 
         computed: {
             ...mapState({
-                products: state => state.products
+                products: state => state.products.items
             }),
              
             ...mapGetters({
