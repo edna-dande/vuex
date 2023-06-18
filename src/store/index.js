@@ -3,7 +3,7 @@ import Vue from 'vue'
 
 Vue.use(Vuex)
 
-new Vuex.Store({
+export default new Vuex.Store({
     state:{ // = data
         products: []
     }, 
@@ -21,8 +21,10 @@ new Vuex.Store({
     },
 
     mutations: {
-       setProducts () {
+       setProducts (state, products) {
         // update products
+
+        state.products = products
         }
     }
 })
